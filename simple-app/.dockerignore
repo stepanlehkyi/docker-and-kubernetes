@@ -1,0 +1,6 @@
+*.md
+Dockerfile
+.dockerignore
+app
+vendor/
+.git/
