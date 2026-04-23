@@ -1,0 +1,27 @@
+services:
+  python-web-app:
+    image: training-app:1.0
+    ports:
+      - "${PYTHON_WEB_APP_PORT:-8080}:8080"
+    env_file:
+      - .env/.env
+    deploy:
+      replicas: 2
+      restart_policy:
+        condition: on-failure
+
+  redis:
+    image: redis:alpine
+    volumes:
+      - redis-storage:/data
+    ports:
+      - "6379:6379"
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 5s
+      timeout: 3s
+      retries: 5
+      start_period: 10s
+
+volumes:
+  redis-storage:
