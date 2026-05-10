@@ -1,0 +1,58 @@
+<div class="weather-container">
+  <h2>Weather Forecast</h2>
+  
+  <div class="button-group">
+    <button 
+      (click)="loadWeather()" 
+      [disabled]="isLoading"
+      class="btn btn-primary"
+    >
+      {{ isLoading ? 'Loading...' : 'Refresh Forecast' }}
+    </button>
+  </div>
+
+  <div *ngIf="error" class="alert alert-error">
+    <strong>Error:</strong> {{ error }}
+  </div>
+
+  <div *ngIf="isLoading && !weatherForecasts.length" class="alert alert-info">
+    Loading weather data...
+  </div>
+
+  <div *ngIf="weatherForecasts.length > 0" class="table-wrapper">
+    <table class="weather-table">
+      <thead>
+        <tr>
+ <th>Date</th>
+      <th>Temperature (°C)</th>
+          <th>Temperature (°F)</th>
+    <th>Summary</th>
+</tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let forecast of weatherForecasts" class="forecast-row">
+       <td class="date-cell">{{ formatDate(forecast.date) }}</td>
+     <td class="temp-cell">
+       <span class="temp-badge" [ngClass]="getTemperatureClass(forecast.temperatureC)">
+   {{ forecast.temperatureC }}°
+            </span>
+       </td>
+          <td class="temp-cell">
+      <span class="temp-badge" [ngClass]="getTemperatureClass(forecast.temperatureC)">
+              {{ forecast.temperatureF }}°
+  </span>
+   </td>
+          <td class="summary-cell">
+    <span class="summary-badge" [ngClass]="getSummaryClass(forecast.summary)">
+    {{ forecast.summary || 'N/A' }}
+</span>
+          </td>
+   </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div *ngIf="!isLoading && weatherForecasts.length === 0 && !error" class="alert alert-info">
+    Click "Refresh Forecast" to load weather data
+  </div>
+</div>
